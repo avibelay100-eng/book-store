@@ -368,3 +368,45 @@ main {
   cursor: pointer;
 }
 
+/* גלילת מסך */
+
+
+
+body {
+  background-image: linear-gradient(
+    #3f82d3,
+    #238ba8,
+    #655abc,
+    #5aa4c4,
+    #5174cd,
+    #664dc3,
+    #2a7ab6,
+    #3d5dad,
+    #5560e1,
+    #38738a,
+    #1f8fae,
+    #2a93a3
+  );
+}
+
+body{
+  background-color: #1f8fae;
+  height: 4000px;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+ transform: translateX(150%);
+ transform: all ease 0.5s;
+}
+
+.back-to-top.active {
+  transform: translateX(0);
+}
+
+
+
+
+

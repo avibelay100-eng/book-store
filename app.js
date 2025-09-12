@@ -224,6 +224,7 @@ function openModal(type) {
         `;
       }
 
+      
       modalContent.appendChild(div);
     });
 
@@ -272,9 +273,11 @@ function openModal(type) {
     }
   }
 
+
   $('#overlay').style.display = 'block';
   $('#modal').style.display = 'block';
 }
+
 
 
 function closeModal() {
@@ -290,6 +293,7 @@ function saveToStorage() {
   localStorage.setItem('favorites', JSON.stringify(favorites));
 }
 
+
 function loadFromStorage() {
   const savedCart = localStorage.getItem('cart');
   if (savedCart) {
@@ -297,9 +301,31 @@ function loadFromStorage() {
     updateCartCount();
   }
 
+
   const savedFavs = localStorage.getItem('favorites');
   if (savedFavs) {
     favorites = JSON.parse(savedFavs);
     updateFavoritesCount();
   }
 }
+
+// פונקציה לגלילה למעלה
+document.querySelector('.back-to-top')?.addEventListener('click', function(event){
+  event.preventDefault()
+  window.scrollTo({
+    top:0,
+    behavior: "smooth"
+  })
+})
+
+
+document.addEventListener('scroll', function(){
+  const scrollTop = document.documentElement.scrollTop;
+  const screnSize= document.documentElement.clientHeight;
+
+  if(scrollTop > (screnSize/2) ){
+    document.querySelector('.back-to-top').classList.add('active')
+  } else {
+    document.querySelector('.back-to-top').classList.remove('active')
+  }
+  })
