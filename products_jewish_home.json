@@ -1,0 +1,148 @@
+{
+  "products1": [
+    {
+      "slug": "books",
+      "name": "ספרים",
+      "image": "assets/cat-books.jpg",
+      "description": "סידורים, תהילים וקודש"
+    },
+    {
+      "slug": "home",
+      "name": "עיצוב לבית",
+      "image": "assets/cat-home.jpg",
+      "description": "פריטים מעוצבים עם נופך יהודי"
+    },
+    {
+      "slug": "holiday",
+      "name": "חגים ומתנות",
+      "image": "assets/cat-holiday.jpg",
+      "description": "מארזים ומתנות לחגים"
+    },
+    {
+      "id": "p5",
+      "title": "ספר בעל התניא הקדוש",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 45,
+      "image": "https://chabadshop.com/cdn/shop/products/f47e4f314115488ca028aaa2737d300d_1197x1197.png?v=1735841662",
+      "category": "books",
+      "featured": true
+    },
+    {
+      "id": "p6",
+      "title": "פמוטים לשבת",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 120,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK5wd9YJ9ViCZIEeLQO2Z4JtZcC9EGSkxYQA&s",
+      "category": "home",
+      "featured": true
+    },
+    {
+      "id": "p7",
+      "title": "ערכת תפילין עם תיק מהודר",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 1800,
+      "image": "https://ot-m.co.il/wp-content/uploads/2025/02/%D7%A1%D7%98-%D7%AA%D7%A4%D7%99%D7%9C%D7%99%D7%9F-%D7%9B%D7%A9%D7%A8%D7%95%D7%AA-.jpg",
+      "category": "home",
+      "featured": true
+    },
+    {
+      "id": "p8",
+      "title": "סידור תפילה עם תרגום",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 18,
+      "image": "https://birconim.co.il/cdn/shop/products/103_1024x1024.jpg?v=1511688720",
+      "category": "books",
+      "featured": true
+    },
+    {
+      "id": "p9",
+      "title": "ספר שמות עם הסברים לילדים",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 18,
+      "image": "https://www.hbooks.co.il/images/itempics/hbooks941_09112021174312.jpg?20241009143441",
+      "category": "books",
+      "featured": false
+    },
+    {
+      "id": "p10",
+      "title": "ספר ליקוטי מוהרן",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 80,
+      "image": "https://www.hbooks.co.il/images/itempics/5141_141020211515031.jpg",
+      "category": "books",
+      "featured": false
+    },
+    {
+      "id": "p11",
+      "title": "חמישה חומשי תורה מאירה",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 299,
+      "image": "https://5dakot.net/wp-content/uploads/2024/01/WhatsApp-Image-2020-11-11-at-10.37.36.jpeg",
+      "category": "books",
+      "featured": false
+    },
+    {
+      "id": "p12",
+      "title": "טלית מהודרת לחתן",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 550,
+      "image": "https://www.3kings.co.il/images/itempics/4604_15022024085935_small.jpg?20240215090112",
+      "category": "home",
+      "featured": false
+    },
+    {
+      "id": "p13",
+      "title": "תמונת זכוכית לבית",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 250,
+      "image": "https://bglassdesign.co.il/wp-content/uploads/2024/12/WhatsApp-Image-2024-12-29-at-22.10.23.jpeg",
+      "category": "home",
+      "featured": false
+    },
+    {
+      "id": "p14",
+      "title": "מזוזות לבית",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 70,
+      "image": "https://www.gift4soul.co.il/files/catalog/item/thumbsrc/%D7%91%D7%99%D7%AA_%D7%9E%D7%96%D7%95%D7%96%D7%94_%D7%9E%D7%95%D7%96%D7%94%D7%91_%D7%9E%D7%A2%D7%95%D7%A6%D7%91.png",
+      "category": "home",
+      "featured": false
+    },
+    {
+      "id": "p15",
+      "title": "ספר בעל התניא הקדוש",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 45,
+      "image": "https://chabadshop.com/cdn/shop/products/f47e4f314115488ca028aaa2737d300d_1197x1197.png?v=1735841662",
+      "category": "books",
+      "featured": false
+    },
+    {
+      "id": "p16",
+      "title": "פמוטים לשבת",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 120,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK5wd9YJ9ViCZIEeLQO2Z4JtZcC9EGSkxYQA&s",
+      "category": "home",
+      "featured": false
+    },
+    {
+      "id": "p17",
+      "title": "ערכת תפילין עם תיק מהודר",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 1800,
+      "image": "https://ot-m.co.il/wp-content/uploads/2025/02/%D7%A1%D7%98-%D7%AA%D7%A4%D7%99%D7%9C%D7%99%D7%9F-%D7%9B%D7%A9%D7%A8%D7%95%D7%AA-.jpg",
+      "category": "home",
+      "featured": false
+    },
+    {
+      "id": "p18",
+      "title": "סידור תפילה עם תרגום",
+      "description": "לחצו כאן על מנת להוסיף לעגלה",
+      "price": 18,
+      "image": "https://birconim.co.il/cdn/shop/products/103_1024x1024.jpg?v=1511688720",
+      "category": "books",
+      "featured": false
+    }
+  ]
+}
