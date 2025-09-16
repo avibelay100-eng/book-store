@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מוצרים לבית  היהודי</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+    <div id="topBanner">
+      <img src="assets/hero.jpg.jpeg" alt="ירושלים" class="header-hero-img" style="width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-bottom:0;display:block;" />
+    </div>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#">
+      <img src="https://swissjews.org/wp-content/uploads/2021/11/יהדות-וכל-השאר-לוגו.png" alt="לוגו" class="brand-logo" />
+      <span class="brand-name">קדושה יהודית</span>
+    </a>
+
+    <nav class="nav">
+      <a href="index.html" class="nav-link">חנות</a>
+      <a href="#about" class="nav-link">אודות</a>
+      <a href="#contact" class="nav-link">צור קשר</a>
+      <a href="recipes.html" class="nav-link">מתכונים לשבת</a>
+      <a href="jwish.html" class="nav-link">מוצרים לבית היהודי</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="favoritesBtn" aria-label="מועדפים">
+        ❤️ <span class="badge" id="favoritesCount">0</span>
+      </button>
+      <button class="icon-btn" id="cartBtn" aria-label="עגלת קניות">
+        🛒 <span class="badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<body>
+    <div class="main-content" style="display:block;">
+      <h1>מבחר עיצובים לבית היהודי</h1>
+      <section id="filters" class="filters">
+        <div class="search">
+          <label for="searchInput" class="sr-only">חיפוש</label>
+          <input id="searchInput" type="search" placeholder="חיפוש מוצרים..." />
+        </div>
+        <div id="categoryChips" class="chips"></div>
+        <div class="sort">
+          <label for="sortSelect">מיון:</label>
+          <select id="sortSelect">
+            <option value="featured">מומלצים</option>
+            <option value="price-asc">מחיר: נמוך לגבוה</option>
+            <option value="price-desc">מחיר: גבוה לנמוך</option>
+            <option value="name-asc">שם: א-ת</option>
+          </select>
+        </div>
+      </section>
+        <div class="grid-products"></div>
+    </div>   
+</body>
+</html>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© 2025 אתר קדושה יהודית. כל הזכויות שמורות.</p>
+        <div class="footer-links">
+          <a href="trems.html" class="link">תקנון זכויות יוצרים</a>
+        </div>
+        <button class="back-to-top">☝️ גלילה למעלה</button>
+      </div>
+       <script src="jwish.js"></script>
+    </footer>

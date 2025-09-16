@@ -37,10 +37,22 @@ function bindUI() {
     renderProducts();
   });
 
-  $('#cartBtn').addEventListener('click', () => openModal('cart'));
-  $('#favoritesBtn').addEventListener('click', () => openModal('favorites'));
-  $('#closeModal').addEventListener('click', closeModal);
-  $('#overlay').addEventListener('click', closeModal);
+  $('#cartBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    openModal('cart');
+  });
+  $('#favoritesBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    openModal('favorites');
+  });
+  $('#closeModal').addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeModal();
+  });
+  $('#overlay').addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeModal();
+  });
 }
 
 function renderCategoryChips(categories) {
@@ -111,14 +123,14 @@ function renderProducts() {
 
   items.forEach(p => {
     const card = document.createElement('article');
-    card.className = 'card';
+    card.className = 'product-card';
     card.innerHTML = `
       <div class="card-media">
         <img src="${p.image}" alt="${p.title}">
       </div>
       <div class="card-body">
-        <h3>${p.title}</h3>
-        <p>${p.description}</p>
+        <h3 class="card-title">${p.title}</h3>
+        <p class="card-meta">${p.description}</p>
       </div>
       <div class="card-actions">
         <span class="price">₪${p.price}</span>
@@ -127,7 +139,7 @@ function renderProducts() {
           <span class="qty-display">0</span>
           <button class="qty-btn plus">+</button>
         </div>
-        <button class="btn btn-secondary add-to-fav" data-id="${p.id}">❤️</button>
+        <button class="icon-btn add-to-fav" data-id="${p.id}">❤️</button>
       </div>
     `;
     grid.appendChild(card);
@@ -156,7 +168,7 @@ function attachProductEvents() {
       updateCartCount();
       saveToStorage(); // ✅ שמירה
     });
-
+   
     minusBtn.addEventListener('click', () => {
       let item = cart.find(p => p.id === id);
       if (item) {
@@ -206,25 +218,19 @@ function openModal(type) {
   } else {
     list.forEach(item => {
       const div = document.createElement('div');
-      div.className = 'modal-item';
-
-      if (type === 'cart') {
-        div.innerHTML = `
-          <strong>${item.title}</strong> - ₪${item.price}
+      div.className = 'cart-list-item';
+      div.innerHTML = `
+        <span class="item-title">${item.title}</span>
+        <span class="item-price">₪${item.price}</span>
+        ${type === 'cart' ? `
           <div class="quantity-controls" data-id="${item.id}">
             <button class="qty-btn minus">−</button>
             <span class="qty-display">${item.quantity}</span>
             <button class="qty-btn plus">+</button>
           </div>
-        `;
-      } else {
-        div.innerHTML = `
-          <strong>${item.title}</strong> - ₪${item.price}
-          <button class="remove-fav" data-id="${item.id}">הסר</button>
-        `;
-      }
-
-      
+        ` : ''}
+        <button class="icon-btn ${type === 'cart' ? 'remove-cart' : 'remove-fav'}" data-id="${item.id}">❌</button>
+      `;
       modalContent.appendChild(div);
     });
 
@@ -260,6 +266,15 @@ function openModal(type) {
           }
         });
       });
+      modalContent.querySelectorAll('.remove-cart').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.id;
+          cart = cart.filter(p => p.id !== id);
+          updateCartCount();
+          saveToStorage();
+          openModal('cart');
+        });
+      });
     } else {
       modalContent.querySelectorAll('.remove-fav').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -267,7 +282,7 @@ function openModal(type) {
           favorites = favorites.filter(p => p.id !== id);
           updateFavoritesCount();
           saveToStorage();
-          btn.parentElement.remove();
+          openModal('favorites');
         });
       });
     }
@@ -276,6 +291,7 @@ function openModal(type) {
 
   $('#overlay').style.display = 'block';
   $('#modal').style.display = 'block';
+  document.body.classList.add('modal-open');
 }
 
 
@@ -283,6 +299,7 @@ function openModal(type) {
 function closeModal() {
   $('#overlay').style.display = 'none';
   $('#modal').style.display = 'none';
+  document.body.classList.remove('modal-open');
 }
 
 document.addEventListener('DOMContentLoaded', init);
