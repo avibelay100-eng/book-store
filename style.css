@@ -1,9 +1,26 @@
-html, body {
-  height: 100%;
+/* עיצוב כותרת ראשית של עמוד (h1) */
+h1 {
+  text-align: center;
+  color: #bfa13a;
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin: 36px 0 24px 0;
+  text-shadow: 0 2px 8px rgba(191,161,58,0.10), 0 1px 0 #fff;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e9e6ef;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
+/* --- עיצוב כללי של הדף --- */
 body {
-  min-height: auto;
-  display: block;
+  margin: 0;
+  padding: 0;
+  font-family: "Heebo", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.6;
+  direction: rtl;
 }
 .site-footer {
   width: 100%;
@@ -14,10 +31,21 @@ body {
   left: 0;
   bottom: 0;
   z-index: 100;
-  margin-top: 40px;
+}
+/* --- פוטר --- */
+.site-footer {
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 8px rgba(0,0,0,.04);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
 }
 .product-card {
   transition: transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s;
+}
 .product-card:hover {
   transform: translateY(-12px) scale(1.05);
   box-shadow: 0 12px 36px rgba(0,0,0,0.16);
@@ -45,24 +73,17 @@ body {
   display: block;
   margin: auto;
 }
-/* עיצוב כמות ומועדפים/עגלה כמו בדוגמה */
-.card-actions, .cart-actions, .favorite-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 12px;
-}
+/* --- כפתורים ואייקונים --- */
 .icon-btn, .cart-btn, .favorite-btn {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #d9534f;
   cursor: pointer;
   transition: box-shadow .2s;
@@ -73,34 +94,27 @@ body {
 .qty-btn {
   background: #eee;
   border: none;
-  padding: 6px 12px;
-  font-size: 1.1rem;
+  padding: 4px 8px;
+  font-size: 1rem;
   cursor: pointer;
-  border-radius: 6px;
-  margin: 0 2px;
+  border-radius: 4px;
 }
 .qty-display {
-  min-width: 24px;
+  min-width: 20px;
   text-align: center;
   font-size: 1.1rem;
   font-weight: 500;
 }
-/* עיצוב כרטיסי מוצרים בעגלה ובמועדפים */
+/* --- כרטיסי עגלה ומועדפים --- */
 .cart-product, .favorite-product {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,.08);
-  margin: 0 0 18px 0;
-  padding: 0;
+  margin-bottom: 18px;
+  width: 250px;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  width: 250px;
-  min-width: 250px;
-  max-width: 250px;
-  justify-content: flex-start;
-  overflow: visible;
 }
 .cart-product .cart-media, .favorite-product .favorite-media {
   width: 100%;
@@ -145,30 +159,29 @@ body {
   justify-content: center;
   align-items: center;
 }
+/* --- כרטיס מוצר --- */
 .product-card {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,.08);
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   width: 280px;
   min-width: 220px;
   max-width: 320px;
-  justify-content: flex-start;
-  overflow: visible;
-}
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s;
 }
 .product-card .card-media {
   width: 100%;
-  height: 160px;
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f3f1f7;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  overflow: hidden;
 }
 .product-card .card-media img {
   width: 100%;
@@ -177,37 +190,79 @@ body {
   border-radius: 0;
 }
 .product-card .card-body {
-  padding: 18px 12px 16px 12px;
+  padding: 22px 16px 18px 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  align-items: center;
 }
 .product-card .card-title {
-  margin: 0 0 4px;
+  margin: 0 0 8px;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  text-align: center;
 }
 .product-card .card-meta {
   color: var(--muted);
-  font-size: .95rem;
+  font-size: 1rem;
+  text-align: center;
 }
 .product-card .price {
   font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  text-align: center;
 }
 .product-card .card-actions {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 12px;
+  justify-content: center;
+  align-items: center;
+}
+.product-card .icon-btn {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #d9534f;
+  cursor: pointer;
+  transition: box-shadow .2s;
+}
+.product-card .icon-btn:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,.10);
+}
+.product-card .qty-btn {
+  background: #eee;
+  border: none;
+  padding: 4px 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.product-card .qty-display {
+  min-width: 20px;
+  text-align: center;
+  font-size: 1.1rem;
 }
 
+/* גריד לעמוד מוצרים יהודיים בלבד! (ריווח קטן, יישור למרכז, FLEX) */
 .grid-products {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(170px, 1fr));
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
+  gap: 18px 12px;
+  margin: 0 auto;
+  max-width: 1200px;
   box-sizing: border-box;
+}
+.grid-products .product-card {
+  margin: 0;
 }
 
 .product-card .card-media {
@@ -248,13 +303,12 @@ body {
   margin-top: 8px;
 }
 
+/* --- משתני עיצוב --- */
 :root{
   --brand:#6B5B95;
-  --brand-600:#5d4d87;
   --ink:#1a1a1a;
   --muted:#666;
   --bg:#faf9fb;
-  --card:#ffffff;
   --border:#e9e6ef;
   --radius:14px;
   --shadow:0 8px 24px rgba(0,0,0,.08);
@@ -263,7 +317,7 @@ body {
 #topBanner {
   width: 100%;
   height: 300px; /* אפשר לשנות את הגובה */
-  background-image: url("assets/hero.jpg.jpeg"); /* הנתיב לתמונה שלך */
+  background-image: url("assets/hero.jpg.jpeg");
   background-size: cover; /* שהתמונה תכסה את כל השטח */
   background-position: center; /* שהתמונה תהיה ממורכזת */
   background-repeat: no-repeat;
@@ -298,95 +352,322 @@ body{
 .container{max-width:1100px;margin:0 auto;padding:0 16px}
 
 /* Header */
+/* עיצוב פס עליון של האתר (ההדר הראשי) */
 .site-header{
   position:sticky; top:0; z-index:100;
   background:#fff; border-bottom:1px solid var(--border);
   backdrop-filter:saturate(140%) blur(8px);
 }
-.header-inner{display:flex;align-items:center;gap:16px;padding:14px 0}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
-.brand-logo{width:140px;height:36px;object-fit:contain}
-.brand-name{font-weight:800;letter-spacing:.2px}
-.nav{margin-inline-start:auto;display:flex;gap:18px}
-.nav-link{color:var(--muted);text-decoration:none}
-.nav-link:hover{color:var(--ink)}
-.header-cta{margin-inline-start:8px}
-.menu-toggle{display:none;border:0;background:transparent;font-size:22px}
-
-/* Hero */
-.hero{background:linear-gradient(180deg,#fff,transparent 70%);padding:32px 0 10px}
-.hero-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
-.hero-text h1{margin:0 0 8px;font-size:38px}
-.hero-text p{margin:0 0 16px;color:var(--muted)}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-.hero-media img{width:100%;height:auto;border-radius:var(--radius);box-shadow:var(--shadow);}
-
-/* Buttons */
-.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 16px;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--ink);text-decoration:none;transition:.2s}
-.btn:hover{box-shadow:0 6px 18px rgba(0,0,0,.06);transform:translateY(-1px)}
-.btn-primary{background:var(--brand);color:#fff;border-color:transparent}
-.btn-primary:hover{background:var(--brand-600)}
-.btn-ghost{background:transparent}
-
-/* Filters */
-.filters{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:24px 0}
-.search input{
-  width:260px;max-width:100%;padding:10px 12px;border:1px solid var(--border);
-  border-radius:12px;background:#fff;outline:none;
+/* עיצוב התוכן הפנימי של ההדר (יישור לוגו, תפריט וכו') */
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
 }
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{
-  padding:8px 12px;border:1px solid var(--border);background:#fff;border-radius:999px;
-  cursor:pointer;transition:.2s;color:var(--muted);
+/* עיצוב הלוגו והשם של האתר */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
 }
-.chip.active,.chip:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
-.sort select{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}
-
-/* Grids */
-.grid{display:grid;gap:16px}
-.grid-categories{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));margin-top:8px}
-
-
-/* Cards */
-.card{
-  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  overflow:hidden;box-shadow:var(--shadow);transition:transform .2s, box-shadow .2s;
+/* עיצוב תמונת הלוגו */
+.brand-logo {
+  width: 140px;
+  height: 36px;
+  object-fit: contain;
 }
-.card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.10)}
-.card-media{aspect-ratio:4/3;background:#f3f1f7;display:grid;place-items:center}
-.card-media img{width:100%;height:100%;object-fit:cover}
-.card-body{padding:12px}
-.card-title{margin:0 0 4px;font-weight:700}
-.card-meta{color:var(--muted);font-size:.95rem}
-.card-actions{display:flex;justify-content:space-between;align-items:center;padding:12px;border-top:1px solid var(--border)}
-.price{font-weight:700}
-
-/* Sections */
-.shop h2,.products h2,.about h2,.contact h2{margin:26px 0 10px}
-.about,.contact{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin:28px 0;box-shadow:var(--shadow)}
-.contact-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.contact-form input,.contact-form textarea{
-  width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;outline:none;background:#fff
+/* עיצוב שם האתר */
+.brand-name {
+  font-weight: 800;
+  letter-spacing: .2px;
 }
-.empty{
-  margin:14px 0;padding:16px;border:1px dashed var(--border);border-radius:12px;color:var(--muted);text-align:center;background:#fff;
+/* עיצוב תפריט הניווט העליון */
+.nav {
+  margin-inline-start: auto;
+  display: flex;
+  gap: 18px;
+}
+/* עיצוב קישורים בתפריט */
+.nav-link {
+  color: var(--muted);
+  text-decoration: none;
+}
+.nav-link:hover {
+  color: var(--ink);
+}
+/* עיצוב כפתור קריאה לפעולה בהדר */
+.header-cta {
+  margin-inline-start: 8px;
+}
+/* עיצוב כפתור תפריט במסך קטן */
+.menu-toggle {
+  display: none;
+  border: 0;
+  background: transparent;
+  font-size: 22px;
 }
 
-/* Footer */
-.site-footer{margin-top:40px;border-top:1px solid var(--border);background:#fff}
-.footer-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
-
-/* A11y */
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0;margin:-1px}
-
-/* Responsive */
-@media (max-width: 900px){
-  .hero-inner{grid-template-columns:1fr}
-  .nav{display:none}
-  .menu-toggle{display:inline-block;margin-inline-start:auto}
-  .contact-form .form-row{grid-template-columns:1fr}
+/* === עיצוב אזור Hero (באנר ראשי) === */
+/* עיצוב אזור הבאנר הראשי (Hero) */
+.hero {
+  background: linear-gradient(180deg, #fff, transparent 70%);
+  padding: 32px 0 10px;
+}
+/* עיצוב מבנה פנימי של הבאנר (שני טורים) */
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 28px;
+  align-items: center;
+}
+/* עיצוב כותרת ראשית בבאנר */
+.hero-text h1 {
+  margin: 0 0 8px;
+  font-size: 38px;
+}
+/* עיצוב פסקה בבאנר */
+.hero-text p {
+  margin: 0 0 16px;
+  color: rgb(0, 255, 0);
+}
+/* עיצוב שורת כפתורים בבאנר */
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+/* עיצוב תמונת הבאנר */
+.hero-media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
+/* === עיצוב כפתורים בסיסיים === */
+/* עיצוב כפתורים כלליים באתר */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--ink);
+  text-decoration: none;
+  transition: .2s;
+}
+.btn:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  transform: translateY(-1px);
+}
+/* עיצוב כפתור ראשי (כחול) */
+.btn-primary {
+  background: var(--brand);
+  color: #fff;
+  border-color: transparent;
+}
+.btn-primary:hover {
+  background: #5d4d87;
+}
+/* עיצוב כפתור שקוף */
+.btn-ghost {
+  background: transparent;
+}
+
+/* === עיצוב מסננים (Filters) === */
+/* עיצוב שורת מסננים (חיפוש, קטגוריות, מיון) */
+.filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+/* עיצוב שדה חיפוש */
+.search input {
+  width: 260px;
+  max-width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  outline: none;
+}
+/* עיצוב שורת כפתורי קטגוריה */
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+/* עיצוב כפתור קטגוריה בודד */
+.chip {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: .2s;
+  color: var(--muted);
+}
+/* עיצוב כפתור קטגוריה נבחר */
+.chip.active, .chip:hover {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+/* עיצוב תיבת מיון */
+.sort select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* === עיצוב גריד (Grid) === */
+/* עיצוב גריד (Grid) להצגת כרטיסים */
+.grid {
+  display: grid;
+  gap: 16px;
+}
+/* עיצוב גריד לקטגוריות */
+.grid-categories {
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  margin-top: 8px;
+}
+
+/* === עיצוב כרטיסים (Cards) === */
+/* עיצוב כרטיס מוצר כללי */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.10);
+}
+/* עיצוב תמונה בכרטיס מוצר */
+.card-media {
+  aspect-ratio: 4/3;
+  background: #f3f1f7;
+  display: grid;
+  place-items: center;
+}
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* עיצוב גוף הכרטיס */
+.card-body {
+  padding: 12px;
+}
+/* עיצוב כותרת בכרטיס */
+.card-title {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+/* עיצוב טקסט משני בכרטיס */
+.card-meta {
+  color: var(--muted);
+  font-size: .95rem;
+}
+/* עיצוב שורת כפתורים בכרטיס */
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+/* עיצוב מחיר בכרטיס */
+.price {
+  font-weight: 700;
+}
+
+/* === עיצוב אזורים נוספים === */
+.shop h2, .products h2, .about h2, .contact h2 {
+  margin: 26px 0 10px;
+}
+.about, .contact {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 28px 0;
+  box-shadow: var(--shadow);
+}
+.contact-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.contact-form input, .contact-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  outline: none;
+  background: #fff;
+}
+.empty {
+  margin: 14px 0;
+  padding: 16px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  text-align: center;
+  background: #fff;
+}
+
+/* === פוטר פנימי === */
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+/* === נגישות === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+  padding: 0;
+  margin: -1px;
+}
+
+/* === רספונסיביות למסכים קטנים === */
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .nav {
+    display: none;
+  }
+  .menu-toggle {
+    display: inline-block;
+    margin-inline-start: auto;
+  }
+  .contact-form .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === משתני עיצוב גלובליים === */
 :root {
   --bg: #fdfcfb;
   --card-bg: #fff;
@@ -415,26 +696,37 @@ main {
   padding: 24px;
 }
 
+/* כרטיס מתכון - מסגרת */
+/* כרטיס מתכון - מסגרת קומפקטית */
 .recipe-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  margin-bottom: 32px;
+  margin: 32px auto;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  max-width: 700px;
+  min-width: 320px;
+  padding: 0 0 18px 0;
 }
 
 .recipe-img {
   width: 100%;
+  max-height: 220px;
   height: auto;
   object-fit: cover;
   border-bottom: 1px solid var(--border);
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
 }
 
+/* עיצוב תוכן המתכון (מרכיבים + אופן הכנה) */
 .card-details {
-  padding: 20px;
+  padding: 20px 18px 10px 18px;
+  box-sizing: border-box;
 }
 
 .card-details h2 {
@@ -460,25 +752,43 @@ main {
   text-align: center;
 }
 
+/* עיצוב טקסט אופן ההכנה במתכון */
 .recipe-text {
   padding: 0 20px 20px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 420px;
+  margin: 0 auto;
+  color: #222;
 }
 
 /* Responsive */
+/* במסך רחב: המתכון מוצג בשני טורים - תמונה וטקסט */
 @media (min-width: 700px) {
   .recipe-card {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 0;
+    align-items: flex-start;
+    max-width: 700px;
+    margin: 32px auto;
   }
-
   .recipe-img {
-    width: 40%;
+    width: 100%;
+    max-width: 220px;
+    min-width: 140px;
+    max-height: 180px;
     border-bottom: none;
     border-left: 1px solid var(--border);
     border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 0;
+    object-fit: cover;
+    display: block;
   }
-
   .card-details {
-    width: 60%;
+    width: 100%;
+    padding: 24px 18px 10px 0;
+    box-sizing: border-box;
   }
 }
 
@@ -523,11 +833,13 @@ main {
   border-radius: 50%;
 }
 
-.products-grid{
+/* גריד לעמוד חנות ראשית בלבד! (מוצרים בשורות, GRID) */
+.products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 16px;
   padding: 20px;
+  justify-items: center;
 }
  
 
@@ -646,139 +958,20 @@ main {
   cursor: pointer;
 }
 
-/* גלילת מסך */
-
-
-
-body {
-  background-image: linear-gradient(
-    #3f82d3,
-    #238ba8,
-    #655abc,
-    #5aa4c4,
-    #5174cd,
-    #664dc3,
-    #2a7ab6,
-    #3d5dad,
-    #5560e1,
-    #38738a,
-    #1f8fae,
-    #2a93a3
-  );
-}
-
-body{
-  background-color: #1f8fae;
-  height: 4000px;
-}
-
+/* --- כפתור גלילה למעלה --- */
 .back-to-top {
   position: fixed;
   bottom: 10px;
   right: 10px;
- transform: translateX(150%);
- transform: all ease 0.5s;
+  transform: translateX(150%);
+  transition: all 0.5s;
 }
-
 .back-to-top.active {
   transform: translateX(0);
 }
 
-/* עיצוב כרטיסי מוצרים כמו בדוגמה */
-.product-card {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.08);
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  width: 280px;
-  min-width: 220px;
-  max-width: 320px;
-  justify-content: flex-start;
-  overflow: visible;
-}
-.product-card .card-media {
-  width: 100%;
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f3f1f7;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  overflow: hidden;
-}
-.product-card .card-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0;
-}
-.product-card .card-body {
-  padding: 22px 16px 18px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-}
-.product-card .card-title {
-  margin: 0 0 8px;
-  font-weight: 700;
-  font-size: 1.2rem;
-  text-align: center;
-}
-.product-card .card-meta {
-  color: var(--muted);
-  font-size: 1rem;
-  text-align: center;
-}
-.product-card .price {
-  font-weight: 700;
-  font-size: 1.1rem;
-  margin-top: 10px;
-  text-align: center;
-}
-.product-card .card-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  justify-content: center;
-  align-items: center;
-}
-.product-card .icon-btn {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: #d9534f;
-  cursor: pointer;
-  transition: box-shadow .2s;
-}
-.product-card .icon-btn:hover {
-  box-shadow: 0 2px 8px rgba(0,0,0,.10);
-}
-.product-card .qty-btn {
-  background: #eee;
-  border: none;
-  padding: 4px 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.product-card .qty-display {
-  min-width: 20px;
-  text-align: center;
-  font-size: 1.1rem;
-}
+/* --- עיצוב כרטיסי מוצרים כמו בדוגמה --- */
+/* כבר קיים למעלה, אין צורך בכפילות */
 
 /* עיצוב שורת מוצר בעגלה/מועדפים */
 .cart-list-item {
