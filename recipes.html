@@ -1,24 +1,30 @@
-
 <!DOCTYPE html>
 <html lang="en">
- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מתכונים לבית היהודי </title>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מתכונים לבית היהודי </title>
 
 
-    <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
+
 <body>
   <div id="topBanner">
-    <img src="assets/hero.jpg.jpeg" alt="ירושלים" class="header-hero-img" style="width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-bottom:0;display:block;" />
+    <img src="assets/hero.jpg.jpeg" alt="ירושלים" class="header-hero-img"
+      style="width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-bottom:0;display:block;" />
   </div>
   <header class="site-header">
+
     <div class="container header-inner">
       <a class="brand" href="#">
-        <img src="https://swissjews.org/wp-content/uploads/2021/11/יהדות-וכל-השאר-לוגו.png" alt="לוגו" class="brand-logo" />
+        <img src="https://swissjews.org/wp-content/uploads/2021/11/יהדות-וכל-השאר-לוגו.png" alt="לוגו"
+          class="brand-logo" />
         <span class="brand-name">קדושה יהודית</span>
       </a>
+
       <nav class="nav">
         <a href="index.html" class="nav-link">חנות</a>
         <a href="#about" class="nav-link">אודות</a>
@@ -26,79 +32,141 @@
         <a href="recipes.html" class="nav-link">מתכונים לשבת</a>
         <a href="jwish.html" class="nav-link">מוצרים לבית היהודי</a>
       </nav>
-     
+
+      <div class="header-actions">
+          <a href="Submit.html" class="icon-btn" id="signupBtn" aria-label="הרשמה">
+            👤
+          </a>
+        </button>
+      </div>
+
     </div>
+
   </header>
 
-   <h1>מתכונים מיוחדים לבית היהודי</h1>
-   
-<body>
+  <h1>מתכונים מיוחדים לבית היהודי</h1>
+
+
+  <section id="about" class="about">
+    <h2>אודות</h2>
+    <img width="300" height="198" src="https://swissjews.org/wp-content/uploads/2021/11/יהדות-וכל-השאר-300x198.png"
+      alt="יהדות וכל השאר">
+    <section>
+      <h2>לימוד תורה בכיף!</h2>
+      <p>באתר שלנו תמצאו שיעורים, סיכומים וקטעי לימוד קצרים שיאפשרו לכם להעמיק בתורה עם חיוך. כל הלימוד נעשה בצורה
+        קלילה ונגישה, כדי שכולם יוכלו להתחבר בקלות ובאהבה.</p>
+      <p>היכנסו לאזור <a href="#" class="link">לימוד תורה</a> ותתחילו ללמוד עם סגנון!</p>
+    </section>
+    <section>
+      <h2>נגינות קדושה שיגעו בלב</h2>
+      <p>הנגינות שלנו לא רק נשמעות, הן פשוט חודרות ללב. האזינו לנעימות ותפילות שיביאו לכם שקט פנימי ורוגע. כי תמיד
+        כדאי להוסיף מוזיקה רוחנית לכל יום!</p>
+      <p>גלו את הנגינות המיוחדות שלנו באזור <a href="#" class="link">נגינות קדושה</a>.</p>
+    </section>
+    <section>
+      <h2>קניות ברוח יהודית</h2>
+      <p>חפשו את המוצרים המיוחדים שלנו – ספרי קודש, תכשיטים, אביזרי תפילה ועוד. כל פריט שנבחר בקפידה כדי להכניס
+        אור
+        וברכה לביתכם.</p>
+      <p>היכנסו ל<a href="#" class="link">החנות שלנו</a> ותגלו מוצרים שיהפכו את הבית למקום קדוש ומיוחד.</p>
+    </section>
+    <p>
+      אנחנו מאמינים ביופי של מסורת יהודית בעיצוב עכשווי. כאן תמצאו מתנות, ספרים ותשמישי קדושה
+      שנבחרו בקפידה – כדי להכניס חום ומשמעות לכל בית.
+    </p>
+  </section>
+
+
+  <section id="contact" class="contact">
+
+    <h2>צור קשר</h2>
+    <form class="contact-form" onsubmit="event.preventDefault(); alert('הטופס נשלח. נחזור אליך בקרוב!');">
+      <div class="form-row">
+        <label>שם מלא
+          <input type="text" required />
+        </label>
+        <label>אימייל
+          <input type="email" required />
+        </label>
+      </div>
+      <label>הודעה
+        <textarea rows="4" required></textarea>
+      </label>
+      <button class="btn btn-primary" type="submit">שליחה</button>
+    </form>
+  </section>
+
+  <body>
     <div class="recipe-card">
-           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGZyi85m3fn6-QeO8UVs941CoWBVpb4QEtHQ&s" alt="חלה לשבת" class="recipe-img">
-          <div class="card-details">
-              <h2>מתכון לחלה לשבת</h2>
-              <p><strong>מרכיבים:</strong></p>
-              <ul>
-                  <li>1 ק"ג קמח</li>
-                  <li>1 כוס מים</li>
-                  <li>1/4 כוס שמן</li>
-                  <li>1 כף סוכר</li>
-                  <li>1 כף מלח</li>
-                  <li>1 קוביית שמרים טריים</li>
-                  <li>1 ביצה (לשימון החלה)</li>
-              </ul>
-              <p><strong>אופן הכנה:</strong></p>
-              <ol>
-                  <li>שמים את כל החומרים בקערה ולשים עד שהקמח סופג את הנוזלים.</li>
-                  <li>מניחים לתפוח במשך שעה.</li>
-                  <li>חלקים את הבצק לכמה כדורים ומעצבים לחלות.</li>
-                  <li>משאירים לתפוח 30 דקות נוספות.</li>
-                  <li>מברישים את החלות בביצה ומפזרים שומשום אם רוצים.</li>
-                  <li>אופים בתנור בחום של 180 מעלות צלזיוס למשך 30 דקות.</li>
-              </ol>
-              <p class="end-of-recipe">בתיאבון!</p>
-          </div>
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGZyi85m3fn6-QeO8UVs941CoWBVpb4QEtHQ&s"
+        alt="חלה לשבת" class="recipe-img">
+      <div class="card-details">
+        <h2>מתכון לחלה לשבת</h2>
+        <p><strong>מרכיבים:</strong></p>
+        <ul>
+          <li>1 ק"ג קמח</li>
+          <li>1 כוס מים</li>
+          <li>1/4 כוס שמן</li>
+          <li>1 כף סוכר</li>
+          <li>1 כף מלח</li>
+          <li>1 קוביית שמרים טריים</li>
+          <li>1 ביצה (לשימון החלה)</li>
+        </ul>
+        <p><strong>אופן הכנה:</strong></p>
+        <ol>
+          <li>שמים את כל החומרים בקערה ולשים עד שהקמח סופג את הנוזלים.</li>
+          <li>מניחים לתפוח במשך שעה.</li>
+          <li>חלקים את הבצק לכמה כדורים ומעצבים לחלות.</li>
+          <li>משאירים לתפוח 30 דקות נוספות.</li>
+          <li>מברישים את החלות בביצה ומפזרים שומשום אם רוצים.</li>
+          <li>אופים בתנור בחום של 180 מעלות צלזיוס למשך 30 דקות.</li>
+        </ol>
+        <p class="end-of-recipe">בתיאבון!</p>
       </div>
+    </div>
 
-      <div class="recipe-card">
-          <img src="https://tekoafarms.co.il/wp-content/uploads/2018/10/0r9a4258_sarit_goffen_sarit_goffen-860x643.jpg" alt="גולש" class="recipe-img">
-        <div class="recipe-text">
-          <div class="card-details">
-              <h2>מתכון לתבשיל גולש</h2>
-              <p><strong>מרכיבים:</strong></p>
-              <ul>
-                  <li>1  ק"ג בשר גולש חתוך לקוביות</li>
-                  <li>1  בצל קצוץ</li>
-                  <li>2  גזרים פרוסים</li>
-                  <li>4  תפוחי אדמה חתוכים לקוביות</li>
-                  <li>3  כוסות מים</li>
-                  <li>4  כפות פפריקה מתוקה</li>
-                  <li>מלח ופלפל שחור לפי הטעם</li>
-              </ul>
-              <p><strong>אופן הכנה:</strong></p>
-              <ol>
-                  <li>מטגנים את הבצל בשמן עד שהוא מזהיב.</li>
-                  <li>מניחים את הבשר ומטגנים עד שהוא משחים מכל הצדדים.</li>
-                  <li>מוסיפים את הפפריקה, הגזרים, תפוחי האדמה ומערבבים.</li>
-                  <li>מניחים מים, מלח ופלפל ומבשלים על להבה נמוכה למשך 2 שעות עד שהבשר רך.</li>
-              </ol>
-              <p class="end-of-recipe">בתיאבון</p>
-          </div>
-      </div>
- 
-</body>
-</html>   
-   
-
-
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>© 2025 אתר קדושה יהודית. כל הזכויות שמורות.</p>
-        <div class="footer-links">
-          <a href="trems.html" class="link">תקנון זכויות יוצרים</a>
+    <div class="recipe-card">
+      <img src="https://tekoafarms.co.il/wp-content/uploads/2018/10/0r9a4258_sarit_goffen_sarit_goffen-860x643.jpg"
+        alt="גולש" class="recipe-img">
+      <div class="recipe-text">
+        <div class="card-details">
+          <h2>מתכון לתבשיל גולש</h2>
+          <p><strong>מרכיבים:</strong></p>
+          <ul>
+            <li>1  ק"ג בשר גולש חתוך לקוביות</li>
+            <li>1  בצל קצוץ</li>
+            <li>2  גזרים פרוסים</li>
+            <li>4  תפוחי אדמה חתוכים לקוביות</li>
+            <li>3  כוסות מים</li>
+            <li>4  כפות פפריקה מתוקה</li>
+            <li>מלח ופלפל שחור לפי הטעם</li>
+          </ul>
+          <p><strong>אופן הכנה:</strong></p>
+          <ol>
+            <li>מטגנים את הבצל בשמן עד שהוא מזהיב.</li>
+            <li>מניחים את הבשר ומטגנים עד שהוא משחים מכל הצדדים.</li>
+            <li>מוסיפים את הפפריקה, הגזרים, תפוחי האדמה ומערבבים.</li>
+            <li>מניחים מים, מלח ופלפל ומבשלים על להבה נמוכה למשך 2 שעות עד שהבשר רך.</li>
+          </ol>
+          <p class="end-of-recipe">בתיאבון</p>
         </div>
-        <button class="back-to-top">☝️ גלילה למעלה</button>
       </div>
-       
-    </footer>
+
+
+  </body>
+
+</html>
+
+
+<footer class="site-footer">
+
+  <div class="container footer-inner">
+    <p>© 2025 אתר קדושה יהודית. כל הזכויות שמורות.</p>
+    <div class="footer-links">
+      <a href="trems.html" class="link">תקנון זכויות יוצרים</a>
+    </div>
+    <script src="app.js" defer></script>
+    <button class="back-to-top">☝️ גלילה למעלה</button>
+  </div>
+
+</footer>

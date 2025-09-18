@@ -115,7 +115,7 @@ function renderProducts() {
     const minusBtn = card.querySelector('.qty-btn.minus');
     const plusBtn = card.querySelector('.qty-btn.plus');
     const qtyDisplay = card.querySelector('.qty-display');
-    minusBtn.addEventListener('click', function() {
+    minusBtn.addEventListener('click', function () {
       let item = cart.find(i => i.id === product.id);
       if (item) {
         item.quantity--;
@@ -128,7 +128,7 @@ function renderProducts() {
         updateDisplay('cart', cart);
       }
     });
-    plusBtn.addEventListener('click', function() {
+    plusBtn.addEventListener('click', function () {
       let item = cart.find(i => i.id === product.id);
       if (item) {
         item.quantity++;
@@ -155,8 +155,8 @@ function addToCart(productId) {
         } else {
           cart.push({ ...product, quantity: 1 });
         }
-  updateDisplay('cart', cart);
-  loadProducts();
+        updateDisplay('cart', cart);
+        loadProducts();
       }
     });
 }
@@ -165,7 +165,7 @@ function addToFavorites(productId) {
   fetch('products_jewish_home.json') // ← תיקון שם הקובץ
     .then(response => response.json())
     .then(data => {
-  const product = data.products1.find(p => p.id === productId);
+      const product = data.products1.find(p => p.id === productId);
       if (product && !favorites.find(item => item.id === productId)) {
         favorites.push(product);
         updateDisplay('favorites', favorites);
@@ -175,20 +175,20 @@ function addToFavorites(productId) {
 
 function updateDisplay(sectionId, items) {
   // עדכון המספרים על הכפתורים בלבד
-  if(sectionId === 'cart') {
+  if (sectionId === 'cart') {
     document.getElementById('cartCount').textContent = items.length;
-  } else if(sectionId === 'favorites') {
+  } else if (sectionId === 'favorites') {
     document.getElementById('favoritesCount').textContent = items.length;
   }
 }
 
 // הפעלה ראשונית
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   loadProducts();
-  document.getElementById('cartBtn').addEventListener('click', function() {
+  document.getElementById('cartBtn').addEventListener('click', function () {
     showModal('cart', cart);
   });
-  document.getElementById('favoritesBtn').addEventListener('click', function() {
+  document.getElementById('favoritesBtn').addEventListener('click', function () {
     showModal('favorites', favorites);
   });
 });
@@ -223,7 +223,7 @@ function showModal(sectionId, items) {
     `).join('')}
   </div>`;
   // פונקציות כמות לעגלה
-  window.increaseQuantity = function(productId) {
+  window.increaseQuantity = function (productId) {
     let item = cart.find(i => i.id === productId);
     if (item) {
       item.quantity++;
@@ -243,7 +243,7 @@ function showModal(sectionId, items) {
         });
     }
   }
-  window.decreaseQuantity = function(productId, fromProductCard) {
+  window.decreaseQuantity = function (productId, fromProductCard) {
     let item = cart.find(i => i.id === productId);
     if (item) {
       item.quantity--;
@@ -260,23 +260,23 @@ function showModal(sectionId, items) {
     }
   }
   modal.style.display = 'block';
-// פונקציות להסרת מוצר מהמועדפים/עגלה
-window.removeFromCart = function(productId) {
-  const idx = cart.findIndex(item => item.id === productId);
-  if(idx !== -1) {
-    cart.splice(idx, 1);
-    showModal('cart', cart);
-    updateDisplay('cart', cart);
+  // פונקציות להסרת מוצר מהמועדפים/עגלה
+  window.removeFromCart = function (productId) {
+    const idx = cart.findIndex(item => item.id === productId);
+    if (idx !== -1) {
+      cart.splice(idx, 1);
+      showModal('cart', cart);
+      updateDisplay('cart', cart);
+    }
   }
-}
-window.removeFromFavorites = function(productId) {
-  const idx = favorites.findIndex(item => item.id === productId);
-  if(idx !== -1) {
-    favorites.splice(idx, 1);
-    showModal('favorites', favorites);
-    updateDisplay('favorites', favorites);
+  window.removeFromFavorites = function (productId) {
+    const idx = favorites.findIndex(item => item.id === productId);
+    if (idx !== -1) {
+      favorites.splice(idx, 1);
+      showModal('favorites', favorites);
+      updateDisplay('favorites', favorites);
+    }
   }
-}
 }
 
 function closeModal(sectionId) {
@@ -285,11 +285,34 @@ function closeModal(sectionId) {
 }
 
 // חיבור כפתורים לאירועים
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('cartBtn').addEventListener('click', function() {
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('cartBtn').addEventListener('click', function () {
     showModal('cart', cart);
   });
-  document.getElementById('favoritesBtn').addEventListener('click', function() {
+  document.getElementById('favoritesBtn').addEventListener('click', function () {
     showModal('favorites', favorites);
   });
+});
+
+
+// כפתור גלילה למעלה
+var backToTop = document.querySelector('.back-to-top');
+if (backToTop) {
+  backToTop.onclick = function (event) {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+}
+
+// הופך את כפתור הגלילה לגלוי/נסתר לפי מיקום הגלילה
+document.addEventListener('scroll', function () {
+  var scrollTop = document.documentElement.scrollTop;
+  var screnSize = document.documentElement.clientHeight;
+  var backToTopBtn = document.querySelector('.back-to-top');
+  if (!backToTopBtn) return;
+  if (scrollTop > (screnSize / 2)) {
+    backToTopBtn.classList.add('active');
+  } else {
+    backToTopBtn.classList.remove('active');
+  }
 });

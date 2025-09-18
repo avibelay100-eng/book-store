@@ -1,348 +1,444 @@
-const state = {
-  products: [],
-  activeCategory: 'all',
-  query: '',
-  sort: 'featured'
-};
 
-let cart = [];
-let favorites = [];
 
-const $ = sel => document.querySelector(sel);
-const $$ = sel => document.querySelectorAll(sel);
+// --- משתנים גלובליים ---
+var products = [];
+var cart = [];
+var favorites = [];
+var activeCategory = 'all';
+var query = '';
+var sort = 'featured';
 
-async function init() {
-  try {
-    const res = await fetch('data.json', { cache: 'no-store' });
-    const data = await res.json();
-    state.products = data.products || [];
 
-    loadFromStorage(); // ✅ טעינה מה־Local Storage
-    renderCategoryChips(data.categories);
-    renderProducts();
-    bindUI();
-  } catch (err) {
-    console.error('שגיאה בטעינת הנתונים:', err);
+// --- אתחול ראשוני של האפליקציה ---
+document.addEventListener('DOMContentLoaded', startApp);
+
+// טוען נתונים מהשרת ומאתחל את כל הרכיבים
+function startApp() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'data.json');
+  xhr.setRequestHeader('Cache-Control', 'no-store');
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      var data = JSON.parse(xhr.responseText);
+      if (data.products) {
+        products = data.products;
+      }
+      loadFromStorage();
+      renderCategoryChips(data.categories);
+      renderProducts();
+      bindUI();
+    }
+  };
+  xhr.onerror = function() {
+    console.log('שגיאה בטעינת הנתונים');
+  };
+  xhr.send();
+}
+
+// פונקציה עוזרת לבחירת אלמנט ב-DOM
+function getElement(sel) {
+  return document.querySelector(sel);
+}
+
+// קישור כל האירועים לכפתורים ולשדות קלט
+function bindUI() {
+  var searchInput = getElement('#searchInput');
+  if (searchInput) {
+    searchInput.oninput = function(e) {
+      query = e.target.value.toLowerCase();
+      renderProducts();
+    };
+  }
+  var sortSelect = getElement('#sortSelect');
+  if (sortSelect) {
+    sortSelect.onchange = function(e) {
+      sort = e.target.value;
+      renderProducts();
+    };
+  }
+  var cartBtn = getElement('#cartBtn');
+  if (cartBtn) {
+    cartBtn.onclick = function(e) {
+      e.stopPropagation();
+      openModal('cart');
+    };
+  }
+  var favBtn = getElement('#favoritesBtn');
+  if (favBtn) {
+    favBtn.onclick = function(e) {
+      e.stopPropagation();
+      openModal('favorites');
+    };
+  }
+  var closeModalBtn = getElement('#closeModal');
+  if (closeModalBtn) {
+    closeModalBtn.onclick = function(e) {
+      e.stopPropagation();
+      closeModal();
+    };
+  }
+  var overlay = getElement('#overlay');
+  if (overlay) {
+    overlay.onclick = function(e) {
+      e.stopPropagation();
+      closeModal();
+    };
   }
 }
 
-function bindUI() {
-  $('#searchInput').addEventListener('input', e => {
-    state.query = e.target.value.trim().toLowerCase();
-    renderProducts();
-  });
-
-  $('#sortSelect').addEventListener('change', e => {
-    state.sort = e.target.value;
-    renderProducts();
-  });
-
-  $('#cartBtn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    openModal('cart');
-  });
-  $('#favoritesBtn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    openModal('favorites');
-  });
-  $('#closeModal').addEventListener('click', (e) => {
-    e.stopPropagation();
-    closeModal();
-  });
-  $('#overlay').addEventListener('click', (e) => {
-    e.stopPropagation();
-    closeModal();
-  });
-}
-
+// מציג את כפתורי הקטגוריות (chips) ומטפל בלחיצה עליהם
 function renderCategoryChips(categories) {
-  const chips = $('#categoryChips');
+  var chips = getElement('#categoryChips');
+  if (!chips) return;
   chips.innerHTML = '';
-
-  const allChip = document.createElement('button');
+  var allChip = document.createElement('button');
   allChip.className = 'chip active';
   allChip.textContent = 'הכל';
-  allChip.addEventListener('click', () => {
-    state.activeCategory = 'all';
+  allChip.onclick = function() {
+    activeCategory = 'all';
     updateActiveChips();
     renderProducts();
-  });
+  };
   chips.appendChild(allChip);
-
-  categories.forEach(cat => {
-    const chip = document.createElement('button');
+  for (var i = 0; i < categories.length; i++) {
+    var cat = categories[i];
+    var chip = document.createElement('button');
     chip.className = 'chip';
     chip.textContent = cat.name;
-    chip.dataset.slug = cat.slug;
-    chip.addEventListener('click', () => {
-      state.activeCategory = cat.slug;
-      updateActiveChips();
-      renderProducts();
-    });
+    chip.setAttribute('data-slug', cat.slug);
+    // שמירה על ערך נכון של slug בלחיצה (closure)
+    chip.onclick = (function(slug) {
+      return function() {
+        activeCategory = slug;
+        updateActiveChips();
+        renderProducts();
+      };
+    })(cat.slug);
     chips.appendChild(chip);
-  });
+  }
 }
 
+// מעדכן את ה-chip הפעיל (הקטגוריה שנבחרה)
 function updateActiveChips() {
-  $$('#categoryChips .chip').forEach(chip => {
-    chip.classList.toggle('active', chip.dataset.slug === state.activeCategory || (state.activeCategory === 'all' && !chip.dataset.slug));
-  });
+  var chips = document.querySelectorAll('#categoryChips .chip');
+  for (var i = 0; i < chips.length; i++) {
+    var chip = chips[i];
+    var slug = chip.getAttribute('data-slug');
+    if ((activeCategory === 'all' && !slug) || slug === activeCategory) {
+      chip.classList.add('active');
+    } else {
+      chip.classList.remove('active');
+    }
+  }
 }
 
+// מציג את כל המוצרים לפי הקטגוריה, החיפוש והמיון שנבחרו
 function renderProducts() {
-  const grid = $('#productsGrid');
-  const empty = $('#emptyState');
+  var grid = getElement('#productsGrid');
+  var empty = getElement('#emptyState');
+  if (!grid) return;
   grid.innerHTML = '';
-
-  let items = [...state.products];
-
-  if (state.activeCategory !== 'all') {
-    items = items.filter(p => p.category === state.activeCategory);
+  var items = [];
+  for (var i = 0; i < products.length; i++) {
+    items.push(products[i]);
   }
-
-  if (state.query) {
-    items = items.filter(p =>
-      p.title.toLowerCase().includes(state.query) ||
-      p.description.toLowerCase().includes(state.query)
-    );
+  if (activeCategory !== 'all') {
+    var filtered = [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].category === activeCategory) {
+        filtered.push(items[i]);
+      }
+    }
+    items = filtered;
   }
-
-  switch (state.sort) {
-    case 'price-asc':
-      items.sort((a, b) => a.price - b.price);
-      break;
-    case 'price-desc':
-      items.sort((a, b) => b.price - a.price);
-      break;
-    case 'name-asc':
-      items.sort((a, b) => a.title.localeCompare(b.title, 'he'));
-      break;
-    default:
-      items.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  if (query) {
+    var filtered2 = [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].title.toLowerCase().indexOf(query) !== -1 || items[i].description.toLowerCase().indexOf(query) !== -1) {
+        filtered2.push(items[i]);
+      }
+    }
+    items = filtered2;
   }
-
-  items.forEach(p => {
-    const card = document.createElement('article');
+  if (sort === 'price-asc') {
+    items.sort(function(a, b) { return a.price - b.price; });
+  } else if (sort === 'price-desc') {
+    items.sort(function(a, b) { return b.price - a.price; });
+  } else if (sort === 'name-asc') {
+    items.sort(function(a, b) { return a.title.localeCompare(b.title, 'he'); });
+  }
+  for (var i = 0; i < items.length; i++) {
+    var p = items[i];
+    // מצא את הכמות הנוכחית של המוצר בעגלה
+    var qty = 0;
+    for (var j = 0; j < cart.length; j++) {
+      if (cart[j].id === p.id) {
+        qty = cart[j].quantity;
+      }
+    }
+    var card = document.createElement('article');
     card.className = 'product-card';
-    card.innerHTML = `
-      <div class="card-media">
-        <img src="${p.image}" alt="${p.title}">
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">${p.title}</h3>
-        <p class="card-meta">${p.description}</p>
-      </div>
-      <div class="card-actions">
-        <span class="price">₪${p.price}</span>
-        <div class="quantity-controls" data-id="${p.id}">
-          <button class="qty-btn minus">−</button>
-          <span class="qty-display">0</span>
-          <button class="qty-btn plus">+</button>
-        </div>
-        <button class="icon-btn add-to-fav" data-id="${p.id}">❤️</button>
-      </div>
-    `;
+    card.innerHTML =
+      '<div class="card-media">' +
+        '<img src="' + p.image + '" alt="' + p.title + '">' +
+      '</div>' +
+      '<div class="card-body">' +
+        '<h3 class="card-title">' + p.title + '</h3>' +
+        '<p class="card-meta">' + p.description + '</p>' +
+      '</div>' +
+      '<div class="card-actions">' +
+        '<span class="price">₪' + p.price + '</span>' +
+        '<div class="quantity-controls" data-id="' + p.id + '">' +
+          '<button class="qty-btn minus">−</button>' +
+          '<span class="qty-display">' + qty + '</span>' +
+          '<button class="qty-btn plus">+</button>' +
+        '</div>' +
+        '<button class="icon-btn add-to-fav" data-id="' + p.id + '">❤️</button>' +
+      '</div>';
     grid.appendChild(card);
-  });
-
+  }
   attachProductEvents();
-  empty.hidden = items.length > 0;
+  if (empty) empty.hidden = items.length > 0;
 }
 
+
+// מוסיף אירועים לכפתורי + ו- ולמועדפים בכל כרטיס מוצר
 function attachProductEvents() {
-  document.querySelectorAll('.quantity-controls').forEach(control => {
-    const id = control.dataset.id;
-    const minusBtn = control.querySelector('.minus');
-    const plusBtn = control.querySelector('.plus');
-    const display = control.querySelector('.qty-display');
-
-    plusBtn.addEventListener('click', () => {
-      let item = cart.find(p => p.id === id);
-      if (!item) {
-        const product = state.products.find(p => p.id === id);
-        item = { ...product, quantity: 0 };
-        cart.push(item);
-      }
-      item.quantity++;
-      display.textContent = item.quantity;
-      updateCartCount();
-      saveToStorage(); // ✅ שמירה
-    });
-   
-    minusBtn.addEventListener('click', () => {
-      let item = cart.find(p => p.id === id);
-      if (item) {
-        item.quantity--;
-        if (item.quantity <= 0) {
-          cart = cart.filter(p => p.id !== id);
-          display.textContent = 0;
-        } else {
-          display.textContent = item.quantity;
+  var controls = document.querySelectorAll('.quantity-controls');
+  for (var i = 0; i < controls.length; i++) {
+    (function(control) {
+      var id = control.getAttribute('data-id');
+      var minusBtn = control.querySelector('.minus');
+      var plusBtn = control.querySelector('.plus');
+      var display = control.querySelector('.qty-display');
+      plusBtn.onclick = function() {
+        var item = null;
+        for (var j = 0; j < cart.length; j++) {
+          if (cart[j].id === id) item = cart[j];
         }
-        updateCartCount();
-        saveToStorage(); // ✅ שמירה
+        if (!item) {
+          for (var k = 0; k < products.length; k++) {
+            if (products[k].id === id) {
+              item = JSON.parse(JSON.stringify(products[k]));
+              item.quantity = 0;
+              cart.push(item);
+            }
+          }
+        }
+        if (item) {
+          item.quantity = (item.quantity || 0) + 1;
+          display.textContent = item.quantity;
+          updateCartCount();
+          saveToStorage();
+        }
+      };
+      minusBtn.onclick = function() {
+        var item = null;
+        for (var j = 0; j < cart.length; j++) {
+          if (cart[j].id === id) item = cart[j];
+        }
+        if (item) {
+          item.quantity--;
+          if (item.quantity <= 0) {
+            cart = cart.filter(function(p) { return p.id !== id; });
+            display.textContent = 0;
+          } else {
+            display.textContent = item.quantity;
+          }
+          updateCartCount();
+          saveToStorage();
+        }
+      };
+    })(controls[i]);
+  }
+  var favBtns = document.querySelectorAll('.add-to-fav');
+  for (var i = 0; i < favBtns.length; i++) {
+    var btn = favBtns[i];
+    btn.onclick = function() {
+      var id = this.getAttribute('data-id');
+      var product = null;
+      for (var j = 0; j < products.length; j++) {
+        if (products[j].id === id) product = products[j];
       }
-    });
-  });
-
-  document.querySelectorAll('.add-to-fav').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      const product = state.products.find(p => p.id === id);
-      if (product && !favorites.some(f => f.id === product.id)) {
+      var found = false;
+      for (var k = 0; k < favorites.length; k++) {
+        if (favorites[k].id === id) found = true;
+      }
+      if (product && !found) {
         favorites.push(product);
         updateFavoritesCount();
-        saveToStorage(); // ✅ שמירה
+        saveToStorage();
       }
-    });
-  });
+    };
+  }
 }
 
+
+// מעדכן את מספר הפריטים בעגלה (מוצג ליד האייקון)
 function updateCartCount() {
-  $('#cartCount').textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+  var cartCount = getElement('#cartCount');
+  if (!cartCount) return;
+  var sum = 0;
+  for (var i = 0; i < cart.length; i++) {
+    sum += cart[i].quantity || 0;
+  }
+  cartCount.textContent = sum;
 }
 
+// מעדכן את מספר המועדפים (מוצג ליד האייקון)
 function updateFavoritesCount() {
-  $('#favoritesCount').textContent = favorites.length;
+  var favCount = getElement('#favoritesCount');
+  if (!favCount) return;
+  favCount.textContent = favorites.length;
 }
 
+// פותח את המודאל של העגלה או המועדפים ומציג את התוכן
 function openModal(type) {
-  $('#modalTitle').textContent = type === 'cart' ? 'עגלת הקניות שלך' : 'המועדפים שלך';
-  const modalContent = $('#modalContent');
+  var modalTitle = getElement('#modalTitle');
+  var modalContent = getElement('#modalContent');
+  if (!modalTitle || !modalContent) return;
+  if (type === 'cart') {
+    modalTitle.textContent = 'עגלת הקניות שלך';
+  } else {
+    modalTitle.textContent = 'המועדפים שלך';
+  }
   modalContent.innerHTML = '';
-
-  const list = type === 'cart' ? cart : favorites;
-
+  var list = (type === 'cart') ? cart : favorites;
   if (list.length === 0) {
     modalContent.innerHTML = '<p>אין פריטים כרגע.</p>';
   } else {
-    list.forEach(item => {
-      const div = document.createElement('div');
+    for (var i = 0; i < list.length; i++) {
+      var item = list[i];
+      var div = document.createElement('div');
       div.className = 'cart-list-item';
-      div.innerHTML = `
-        <span class="item-title">${item.title}</span>
-        <span class="item-price">₪${item.price}</span>
-        ${type === 'cart' ? `
-          <div class="quantity-controls" data-id="${item.id}">
-            <button class="qty-btn minus">−</button>
-            <span class="qty-display">${item.quantity}</span>
-            <button class="qty-btn plus">+</button>
-          </div>
-        ` : ''}
-        <button class="icon-btn ${type === 'cart' ? 'remove-cart' : 'remove-fav'}" data-id="${item.id}">❌</button>
-      `;
+      var html = '';
+      html += '<span class="item-title">' + item.title + '</span>';
+      html += '<span class="item-price">₪' + item.price + '</span>';
+      if (type === 'cart') {
+        html += '<div class="quantity-controls" data-id="' + item.id + '">' +
+          '<button class="qty-btn minus">−</button>' +
+          '<span class="qty-display">' + item.quantity + '</span>' +
+          '<button class="qty-btn plus">+</button>' +
+        '</div>';
+      }
+      html += '<button class="icon-btn ' + (type === 'cart' ? 'remove-cart' : 'remove-fav') + '" data-id="' + item.id + '">❌</button>';
+      div.innerHTML = html;
       modalContent.appendChild(div);
-    });
-
+    }
     if (type === 'cart') {
-      modalContent.querySelectorAll('.quantity-controls').forEach(control => {
-        const id = control.dataset.id;
-        const minusBtn = control.querySelector('.minus');
-        const plusBtn = control.querySelector('.plus');
-        const display = control.querySelector('.qty-display');
-
-        plusBtn.addEventListener('click', () => {
-          let item = cart.find(p => p.id === id);
-          if (item) {
-            item.quantity++;
-            display.textContent = item.quantity;
-            updateCartCount();
-            saveToStorage();
-          }
-        });
-
-        minusBtn.addEventListener('click', () => {
-          let item = cart.find(p => p.id === id);
-          if (item) {
-            item.quantity--;
-            if (item.quantity <= 0) {
-              cart = cart.filter(p => p.id !== id);
-              control.parentElement.parentElement.remove();
-            } else {
-              display.textContent = item.quantity;
+      var controls = modalContent.querySelectorAll('.quantity-controls');
+      for (var i = 0; i < controls.length; i++) {
+        var control = controls[i];
+        var id = control.getAttribute('data-id');
+        var minusBtn = control.querySelector('.minus');
+        var plusBtn = control.querySelector('.plus');
+        var display = control.querySelector('.qty-display');
+        plusBtn.onclick = function() {
+          for (var j = 0; j < cart.length; j++) {
+            if (cart[j].id === id) {
+              cart[j].quantity++;
+              display.textContent = cart[j].quantity;
+              updateCartCount();
+              saveToStorage();
             }
-            updateCartCount();
-            saveToStorage();
           }
-        });
-      });
-      modalContent.querySelectorAll('.remove-cart').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.dataset.id;
-          cart = cart.filter(p => p.id !== id);
+        };
+        minusBtn.onclick = function() {
+          for (var j = 0; j < cart.length; j++) {
+            if (cart[j].id === id) {
+              cart[j].quantity--;
+              if (cart[j].quantity <= 0) {
+                cart = cart.filter(function(p) { return p.id !== id; });
+                control.parentElement.parentElement.remove();
+              } else {
+                display.textContent = cart[j].quantity;
+              }
+              updateCartCount();
+              saveToStorage();
+            }
+          }
+        };
+      }
+      var removeBtns = modalContent.querySelectorAll('.remove-cart');
+      for (var i = 0; i < removeBtns.length; i++) {
+        var btn = removeBtns[i];
+        btn.onclick = function() {
+          var id = this.getAttribute('data-id');
+          cart = cart.filter(function(p) { return p.id !== id; });
           updateCartCount();
           saveToStorage();
           openModal('cart');
-        });
-      });
+        };
+      }
     } else {
-      modalContent.querySelectorAll('.remove-fav').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.dataset.id;
-          favorites = favorites.filter(p => p.id !== id);
+      var removeFavBtns = modalContent.querySelectorAll('.remove-fav');
+      for (var i = 0; i < removeFavBtns.length; i++) {
+        var btn = removeFavBtns[i];
+        btn.onclick = function() {
+          var id = this.getAttribute('data-id');
+          favorites = favorites.filter(function(p) { return p.id !== id; });
           updateFavoritesCount();
           saveToStorage();
           openModal('favorites');
-        });
-      });
+        };
+      }
     }
   }
-
-
-  $('#overlay').style.display = 'block';
-  $('#modal').style.display = 'block';
+  var overlay = getElement('#overlay');
+  var modal = getElement('#modal');
+  if (overlay) overlay.style.display = 'block';
+  if (modal) modal.style.display = 'block';
   document.body.classList.add('modal-open');
 }
 
-
-
+// סוגר את המודאל והאוברליי
 function closeModal() {
-  $('#overlay').style.display = 'none';
-  $('#modal').style.display = 'none';
+  var overlay = getElement('#overlay');
+  var modal = getElement('#modal');
+  if (overlay) overlay.style.display = 'none';
+  if (modal) modal.style.display = 'none';
   document.body.classList.remove('modal-open');
 }
 
-document.addEventListener('DOMContentLoaded', init);
 
-// ✅ שמירה וטעינה מ־Local Storage
+// שומר את העגלה והמועדפים ל-localStorage
 function saveToStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
   localStorage.setItem('favorites', JSON.stringify(favorites));
 }
 
-
+// טוען את העגלה והמועדפים מ-localStorage
 function loadFromStorage() {
-  const savedCart = localStorage.getItem('cart');
+  var savedCart = localStorage.getItem('cart');
   if (savedCart) {
     cart = JSON.parse(savedCart);
     updateCartCount();
   }
-
-
-  const savedFavs = localStorage.getItem('favorites');
+  var savedFavs = localStorage.getItem('favorites');
   if (savedFavs) {
     favorites = JSON.parse(savedFavs);
     updateFavoritesCount();
   }
 }
 
-// פונקציה לגלילה למעלה
-document.querySelector('.back-to-top')?.addEventListener('click', function(event){
-  event.preventDefault()
-  window.scrollTo({
-    top:0,
-    behavior: "smooth"
-  })
-})
+// כפתור גלילה למעלה
+var backToTop = document.querySelector('.back-to-top');
+if (backToTop) {
+  backToTop.onclick = function(event) {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+}
 
-
-document.addEventListener('scroll', function(){
-  const scrollTop = document.documentElement.scrollTop;
-  const screnSize= document.documentElement.clientHeight;
-
-  if(scrollTop > (screnSize/2) ){
-    document.querySelector('.back-to-top').classList.add('active')
+// הופך את כפתור הגלילה לגלוי/נסתר לפי מיקום הגלילה
+document.addEventListener('scroll', function() {
+  var scrollTop = document.documentElement.scrollTop;
+  var screnSize = document.documentElement.clientHeight;
+  var backToTopBtn = document.querySelector('.back-to-top');
+  if (!backToTopBtn) return;
+  if (scrollTop > (screnSize / 2)) {
+    backToTopBtn.classList.add('active');
   } else {
-    document.querySelector('.back-to-top').classList.remove('active')
+    backToTopBtn.classList.remove('active');
   }
-  })
+});
