@@ -422,6 +422,10 @@ function loadFromStorage() {
 }
 
 // כפתור גלילה למעלה
+<<<<<<< HEAD
+=======
+// כפתור גלילה למעלה
+>>>>>>> 4efd39c34b58d4710adacd700d4193da644687fa
 var backToTop = document.querySelector('.back-to-top');
 if (backToTop) {
   backToTop.onclick = function(event) {
