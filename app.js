@@ -502,13 +502,55 @@ document.addEventListener('scroll', function() {
   var backToTopBtn = document.querySelector('.back-to-top');
 
   if (!backToTopBtn) return;
-  if (scrollTop > (screnSize / 2)) {
+  if (scrollTop > (screnSize / 5)) {
     backToTopBtn.classList.add('active');
   } else {
     backToTopBtn.classList.remove('active');
   }
 });
 
+// תמומות מתחלפות
+const items = document.querySelectorAll('.item');
+let currentSlide = 0;
+const dotsDiv = document.querySelector('.dots');
 
+// הפעלת שקופית ראשונה כברירת מחדל
+items[currentSlide].classList.add('is-active');
 
-// const dotsDiv = document.getElementById("div");
+// יצירת נקודות ניווט
+items.forEach(function(item, index) {
+    const button = document.createElement('button');
+    button.classList.add('dot');
+    button.textContent = (index + 1);
+
+    button.addEventListener('click', function() {
+        items.forEach(function(item) {
+            item.classList.remove('is-active');
+        });
+        items[index].classList.add('is-active');
+        currentSlide = index;
+    });
+
+    dotsDiv.append(button);
+});
+
+// מעבר קדימה
+document.querySelector('.next').addEventListener('click', function() {
+    items[currentSlide].classList.remove('is-active');
+    currentSlide = (currentSlide + 1) % items.length;
+    items[currentSlide].classList.add('is-active');
+});
+
+// מעבר אחורה
+document.querySelector('.prev').addEventListener('click', function(){
+    items[currentSlide].classList.remove('is-active');
+    currentSlide = (currentSlide - 1 + items.length) % items.length;
+    items[currentSlide].classList.add('is-active');
+});
+
+// מעבר אוטומטי כל 4 שניות
+setInterval(function() {
+    items[currentSlide].classList.remove('is-active');
+    currentSlide = (currentSlide + 1) % items.length;
+    items[currentSlide].classList.add('is-active');
+}, 4000);

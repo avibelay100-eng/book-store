@@ -315,7 +315,11 @@ document.addEventListener('scroll', function () {
   } else {
     backToTopBtn.classList.remove('active');
   }
-});
+})
 
-
-// תמונות קרוסלה 
+setInterval(function () {
+  let nextIndex = (currentSlide + 1) % items.length;
+  items[currentSlide].classList.remove('is-active');
+  items[nextIndex].classList.add('is-active');
+  currentSlide = nextIndex;
+}, 4000);
