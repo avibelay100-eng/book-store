@@ -1,5 +1,4 @@
 
-
 // --- משתנים גלובליים ---
 var products = [];
 var cart = [];
@@ -15,9 +14,11 @@ document.addEventListener('DOMContentLoaded', startApp);
 // טוען נתונים מהשרת ומאתחל את כל הרכיבים
 function startApp() {
   var xhr = new XMLHttpRequest();
+
   xhr.open('GET', 'data.json');
   xhr.setRequestHeader('Cache-Control', 'no-store');
   xhr.onload = function() {
+
     if (xhr.status === 200) {
       var data = JSON.parse(xhr.responseText);
       if (data.products) {
@@ -43,42 +44,53 @@ function getElement(sel) {
 // קישור כל האירועים לכפתורים ולשדות קלט
 function bindUI() {
   var searchInput = getElement('#searchInput');
+
   if (searchInput) {
     searchInput.oninput = function(e) {
       query = e.target.value.toLowerCase();
       renderProducts();
     };
   }
+  
   var sortSelect = getElement('#sortSelect');
   if (sortSelect) {
+
     sortSelect.onchange = function(e) {
       sort = e.target.value;
       renderProducts();
     };
   }
+  
   var cartBtn = getElement('#cartBtn');
   if (cartBtn) {
+
     cartBtn.onclick = function(e) {
       e.stopPropagation();
       openModal('cart');
     };
   }
+  
   var favBtn = getElement('#favoritesBtn');
   if (favBtn) {
+
     favBtn.onclick = function(e) {
       e.stopPropagation();
       openModal('favorites');
     };
   }
+  
   var closeModalBtn = getElement('#closeModal');
   if (closeModalBtn) {
+
     closeModalBtn.onclick = function(e) {
       e.stopPropagation();
       closeModal();
     };
   }
+  
   var overlay = getElement('#overlay');
   if (overlay) {
+
     overlay.onclick = function(e) {
       e.stopPropagation();
       closeModal();
@@ -89,6 +101,7 @@ function bindUI() {
 // מציג את כפתורי הקטגוריות (chips) ומטפל בלחיצה עליהם
 function renderCategoryChips(categories) {
   var chips = getElement('#categoryChips');
+  
   if (!chips) return;
   chips.innerHTML = '';
   var allChip = document.createElement('button');
@@ -101,6 +114,7 @@ function renderCategoryChips(categories) {
   };
   chips.appendChild(allChip);
   for (var i = 0; i < categories.length; i++) {
+  
     var cat = categories[i];
     var chip = document.createElement('button');
     chip.className = 'chip';
@@ -121,6 +135,7 @@ function renderCategoryChips(categories) {
 // מעדכן את ה-chip הפעיל (הקטגוריה שנבחרה)
 function updateActiveChips() {
   var chips = document.querySelectorAll('#categoryChips .chip');
+  
   for (var i = 0; i < chips.length; i++) {
     var chip = chips[i];
     var slug = chip.getAttribute('data-slug');
@@ -136,12 +151,14 @@ function updateActiveChips() {
 function renderProducts() {
   var grid = getElement('#productsGrid');
   var empty = getElement('#emptyState');
+  
   if (!grid) return;
   grid.innerHTML = '';
   var items = [];
   for (var i = 0; i < products.length; i++) {
     items.push(products[i]);
   }
+  
   if (activeCategory !== 'all') {
     var filtered = [];
     for (var i = 0; i < items.length; i++) {
@@ -151,8 +168,10 @@ function renderProducts() {
     }
     items = filtered;
   }
+  
   if (query) {
     var filtered2 = [];
+  
     for (var i = 0; i < items.length; i++) {
       if (items[i].title.toLowerCase().indexOf(query) !== -1 || items[i].description.toLowerCase().indexOf(query) !== -1) {
         filtered2.push(items[i]);
@@ -160,6 +179,7 @@ function renderProducts() {
     }
     items = filtered2;
   }
+  
   if (sort === 'price-asc') {
     items.sort(function(a, b) { return a.price - b.price; });
   } else if (sort === 'price-desc') {
@@ -167,16 +187,22 @@ function renderProducts() {
   } else if (sort === 'name-asc') {
     items.sort(function(a, b) { return a.title.localeCompare(b.title, 'he'); });
   }
+
   for (var i = 0; i < items.length; i++) {
+  
     var p = items[i];
     // מצא את הכמות הנוכחית של המוצר בעגלה
     var qty = 0;
+  
     for (var j = 0; j < cart.length; j++) {
       if (cart[j].id === p.id) {
         qty = cart[j].quantity;
       }
     }
+
+
     var card = document.createElement('article');
+  
     card.className = 'product-card';
     card.innerHTML =
       '<div class="card-media">' +
@@ -197,6 +223,7 @@ function renderProducts() {
       '</div>';
     grid.appendChild(card);
   }
+  
   attachProductEvents();
   if (empty) empty.hidden = items.length > 0;
 }
@@ -205,7 +232,9 @@ function renderProducts() {
 // מוסיף אירועים לכפתורי + ו- ולמועדפים בכל כרטיס מוצר
 function attachProductEvents() {
   var controls = document.querySelectorAll('.quantity-controls');
+  
   for (var i = 0; i < controls.length; i++) {
+  
     (function(control) {
       var id = control.getAttribute('data-id');
       var minusBtn = control.querySelector('.minus');
@@ -213,9 +242,11 @@ function attachProductEvents() {
       var display = control.querySelector('.qty-display');
       plusBtn.onclick = function() {
         var item = null;
+  
         for (var j = 0; j < cart.length; j++) {
           if (cart[j].id === id) item = cart[j];
         }
+
         if (!item) {
           for (var k = 0; k < products.length; k++) {
             if (products[k].id === id) {
@@ -225,15 +256,19 @@ function attachProductEvents() {
             }
           }
         }
+
         if (item) {
+  
           item.quantity = (item.quantity || 0) + 1;
           display.textContent = item.quantity;
           updateCartCount();
           saveToStorage();
         }
       };
+
       minusBtn.onclick = function() {
         var item = null;
+  
         for (var j = 0; j < cart.length; j++) {
           if (cart[j].id === id) item = cart[j];
         }
@@ -251,12 +286,16 @@ function attachProductEvents() {
       };
     })(controls[i]);
   }
+
   var favBtns = document.querySelectorAll('.add-to-fav');
+  
   for (var i = 0; i < favBtns.length; i++) {
     var btn = favBtns[i];
+  
     btn.onclick = function() {
       var id = this.getAttribute('data-id');
       var product = null;
+  
       for (var j = 0; j < products.length; j++) {
         if (products[j].id === id) product = products[j];
       }
@@ -264,6 +303,7 @@ function attachProductEvents() {
       for (var k = 0; k < favorites.length; k++) {
         if (favorites[k].id === id) found = true;
       }
+  
       if (product && !found) {
         favorites.push(product);
         updateFavoritesCount();
@@ -277,6 +317,7 @@ function attachProductEvents() {
 // מעדכן את מספר הפריטים בעגלה (מוצג ליד האייקון)
 function updateCartCount() {
   var cartCount = getElement('#cartCount');
+
   if (!cartCount) return;
   var sum = 0;
   for (var i = 0; i < cart.length; i++) {
@@ -288,6 +329,7 @@ function updateCartCount() {
 // מעדכן את מספר המועדפים (מוצג ליד האייקון)
 function updateFavoritesCount() {
   var favCount = getElement('#favoritesCount');
+  
   if (!favCount) return;
   favCount.textContent = favorites.length;
 }
@@ -296,24 +338,30 @@ function updateFavoritesCount() {
 function openModal(type) {
   var modalTitle = getElement('#modalTitle');
   var modalContent = getElement('#modalContent');
+  
   if (!modalTitle || !modalContent) return;
   if (type === 'cart') {
     modalTitle.textContent = 'עגלת הקניות שלך';
   } else {
     modalTitle.textContent = 'המועדפים שלך';
   }
+  
   modalContent.innerHTML = '';
   var list = (type === 'cart') ? cart : favorites;
+  
   if (list.length === 0) {
     modalContent.innerHTML = '<p>אין פריטים כרגע.</p>';
   } else {
+  
     for (var i = 0; i < list.length; i++) {
+  
       var item = list[i];
       var div = document.createElement('div');
       div.className = 'cart-list-item';
       var html = '';
       html += '<span class="item-title">' + item.title + '</span>';
       html += '<span class="item-price">₪' + item.price + '</span>';
+  
       if (type === 'cart') {
         html += '<div class="quantity-controls" data-id="' + item.id + '">' +
           '<button class="qty-btn minus">−</button>' +
@@ -321,12 +369,15 @@ function openModal(type) {
           '<button class="qty-btn plus">+</button>' +
         '</div>';
       }
+  
       html += '<button class="icon-btn ' + (type === 'cart' ? 'remove-cart' : 'remove-fav') + '" data-id="' + item.id + '">❌</button>';
       div.innerHTML = html;
       modalContent.appendChild(div);
     }
+  
     if (type === 'cart') {
       var controls = modalContent.querySelectorAll('.quantity-controls');
+  
       for (var i = 0; i < controls.length; i++) {
         var control = controls[i];
         var id = control.getAttribute('data-id');
@@ -334,7 +385,9 @@ function openModal(type) {
         var plusBtn = control.querySelector('.plus');
         var display = control.querySelector('.qty-display');
         plusBtn.onclick = function() {
+  
           for (var j = 0; j < cart.length; j++) {
+  
             if (cart[j].id === id) {
               cart[j].quantity++;
               display.textContent = cart[j].quantity;
@@ -344,7 +397,9 @@ function openModal(type) {
           }
         };
         minusBtn.onclick = function() {
+  
           for (var j = 0; j < cart.length; j++) {
+  
             if (cart[j].id === id) {
               cart[j].quantity--;
               if (cart[j].quantity <= 0) {
@@ -360,7 +415,9 @@ function openModal(type) {
         };
       }
       var removeBtns = modalContent.querySelectorAll('.remove-cart');
+  
       for (var i = 0; i < removeBtns.length; i++) {
+  
         var btn = removeBtns[i];
         btn.onclick = function() {
           var id = this.getAttribute('data-id');
@@ -372,7 +429,9 @@ function openModal(type) {
       }
     } else {
       var removeFavBtns = modalContent.querySelectorAll('.remove-fav');
+  
       for (var i = 0; i < removeFavBtns.length; i++) {
+  
         var btn = removeFavBtns[i];
         btn.onclick = function() {
           var id = this.getAttribute('data-id');
@@ -387,6 +446,7 @@ function openModal(type) {
   
   var overlay = getElement('#overlay');
   var modal = getElement('#modal');
+
   if (overlay) overlay.style.display = 'block';
   if (modal) modal.style.display = 'block';
   document.body.classList.add('modal-open');
@@ -396,6 +456,7 @@ function openModal(type) {
 function closeModal() {
   var overlay = getElement('#overlay');
   var modal = getElement('#modal');
+
   if (overlay) overlay.style.display = 'none';
   if (modal) modal.style.display = 'none';
   document.body.classList.remove('modal-open');
@@ -411,11 +472,13 @@ function saveToStorage() {
 // טוען את העגלה והמועדפים מ-localStorage
 function loadFromStorage() {
   var savedCart = localStorage.getItem('cart');
+
   if (savedCart) {
     cart = JSON.parse(savedCart);
     updateCartCount();
   }
   var savedFavs = localStorage.getItem('favorites');
+  
   if (savedFavs) {
     favorites = JSON.parse(savedFavs);
     updateFavoritesCount();
@@ -423,8 +486,8 @@ function loadFromStorage() {
 }
 
 // כפתור גלילה למעלה
-// כפתור גלילה למעלה
 var backToTop = document.querySelector('.back-to-top');
+
 if (backToTop) {
   backToTop.onclick = function(event) {
     event.preventDefault();
@@ -437,6 +500,7 @@ document.addEventListener('scroll', function() {
   var scrollTop = document.documentElement.scrollTop;
   var screnSize = document.documentElement.clientHeight;
   var backToTopBtn = document.querySelector('.back-to-top');
+
   if (!backToTopBtn) return;
   if (scrollTop > (screnSize / 2)) {
     backToTopBtn.classList.add('active');
@@ -444,3 +508,7 @@ document.addEventListener('scroll', function() {
     backToTopBtn.classList.remove('active');
   }
 });
+
+
+
+// const dotsDiv = document.getElementById("div");

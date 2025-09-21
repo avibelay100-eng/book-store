@@ -316,3 +316,6 @@ document.addEventListener('scroll', function () {
     backToTopBtn.classList.remove('active');
   }
 });
+
+
+// תמונות קרוסלה 
