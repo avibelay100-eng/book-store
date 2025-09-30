@@ -13,16 +13,7 @@ h1 {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
-/* --- עיצוב כללי של הדף --- */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Heebo", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: var(--ink);
-  background: var(--bg);
-  line-height: 1.6;
-  direction: rtl;
-}
+
 
 /* --- פוטר --- */
 .site-footer {
@@ -372,13 +363,6 @@ body {
 
 
 
-body {
-  font-family: "Heebo", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: var(--ink);
-  background: var(--bg);
-  line-height: 1.6;
-}
-
 /* Layout */
 .container {
   max-width: 1100px;
@@ -390,10 +374,10 @@ body {
 /* עיצוב פס עליון של האתר (ההדר הראשי) */
 .site-header {
   position: sticky;
-  height: 111px;
+  height: 60px;
   top: 0;
   z-index: 100;
-  background: #ffffff;
+  background: #fffefe;
   border-bottom: 1px solid var(--border);
   backdrop-filter: saturate(140%) blur(8px);
 }
@@ -769,12 +753,13 @@ body {
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font);
   background-color: #004767;
   direction: rtl;
   color: var(--text);
   line-height: 1.6;
 }
+
+
 
 main {
   max-width: 1000px;
@@ -888,14 +873,7 @@ main {
 }
 
 
-.header-banner-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 30%;
-  /* מיקוד באזור הדגל והכותל */
-  display: block;
-}
+
 
 
 .header-actions {
@@ -1212,12 +1190,22 @@ main {
   display: block;
 }
 
+
 .slidershow img {
-  width: 100%;
-  height: 100%;
-  align-items: center;  
+    width: 100%;
+    height: 100%; 
+    display: block;
+    padding: 30px ;
+    margin: 0 auto;
+    border-radius: 8px;
 }
 
+.slidershow img:hover {
+    transform: scale(1.03); /* אפקט הגדלה קל בעת מעבר עכבר */
+}
+
+
+/* כפתורי ניווט שמאלה וימינה */
 .prev,
 .next {
   position: absolute;
@@ -1240,6 +1228,7 @@ main {
   right: 10px;
 }
 
+/* מספרים מתחת לתמונות המתחלפות */
 .dots {
   position: absolute;
   bottom: 10px;
@@ -1259,3 +1248,5 @@ main {
   cursor: pointer;
   font-weight: bold;
 }
+
+/* תפריט מובייל */
